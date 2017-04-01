@@ -264,11 +264,6 @@ BinarySearchTree.prototype.findMaxDepth = function(){
   return maxDepth;
 };
 
-/* BREADTH FIRST TREE TRAVERSAL */
-
-/* Breadth First Search finds all the siblings at each level
-   in order from left to right or from right to left. */
-
 BinarySearchTree.prototype.findMin = function(){
   var node = this;
   var traverse = function(node){
@@ -286,7 +281,16 @@ BinarySearchTree.prototype.findMax = function(){
 };
 
 
+var invertTree = function(root){
+  if (root){
+    var left = root.left ? root.left : null;
+    var right = root.right ? root.right : null;
 
+    root.left = invertTree(right);
+    root.right = invertTree(left);
+  }
+  return root;
+}
 
 
 
