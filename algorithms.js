@@ -163,6 +163,82 @@ var binaryTreeSum = function(tree){
 //                    8
 
 // you'll need to create a binary search tree constructor!
-var arrayToBinarySearchTree = function(array){
+var BinarySearchTree = function(value, left, right){
+  this.value = value;
+  this.left = left;
+  this.right = right;
+};
 
+BinarySearchTree.prototype.insert = function(value){
+  if (!this.value){
+    this.value = value;
+  }
+  if (value > this.value){
+    if (!this.left){
+      this.left = new BinarySearchTree(value);
+    } else {
+      this.left.insert(value);
+    }
+  }
+  if (value < this.value){
+    if (!this.right){
+      this.right = new BinarySearchTree(value);
+    } else {
+      this.right.insert(value);
+    }
+  }
+};
+
+var findAvg = function(array){
+ return Math.ceil(array.reduce((a,b)=>a + b) / array.length); 
+};
+
+var findClosest = function(arr, target){
+  var _difference = Infinity;
+  var closest = Infinity;
+  for (var i = 0; i < arr.length; i++){
+    var cur = arr[i];
+    if (cur === target){
+      _difference = cur - target;
+      closest = cur;
+    }
+    else if (cur > target){
+      if (cur - target < _difference){
+        _difference = cur - target;
+        closest = cur;
+      }
+    } else if (cur < target){
+      if (target - cur < _difference){
+        _difference = target - cur;
+        closest = cur;
+      }
+    }
+  }
+  return closest;
+};
+
+var arrayToBinarySearchTree = function(array){
+  var _greaterThan = [];
+  var _lessThan = [];
+  var root = findClosest(array, findAvg(array));
+  var result = new BinarySearchTree(root);
+  
+  array.splice(array.indexOf(root), 1);
+
+  for (var i = 0; i < array.length; i++){
+    if (array[i] < root){
+      _lessThan.push(array[i]);
+    } else {
+      _greaterThan.push(array[i]);
+    }
+  }
+  
+  
+  for (var j = 0; j < _greaterThan.length; j++){
+    result.left = arrayToBinarySearchTree(_greaterThan);
+  }
+  for (var k = 0; k < _lessThan.length; k++){
+    result.right = arrayToBinarySearchTree(_lessThan);
+  }
+  return result;
 };
