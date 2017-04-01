@@ -217,6 +217,8 @@ var findClosest = function(arr, target){
   return closest;
 };
 
+
+//this only works for arrays of up to length 5
 var arrayToBinarySearchTree = function(array){
   var _greaterThan = [];
   var _lessThan = [];
@@ -242,3 +244,24 @@ var arrayToBinarySearchTree = function(array){
   }
   return result;
 };
+
+BinarySearchTree.prototype.findMaxDepth = function(){
+  var maxDepth = 0;
+  var node = this;
+
+  var traverse = function(node, depth){
+    if (!node){
+      return null;
+    } else {
+      if (depth > maxDepth){
+        maxDepth = depth;
+      }
+      traverse(this.left, depth + 1);
+      traverse(this.right, depth + 1);
+    }
+  };
+  traverse(node, 0);
+  return maxDepth;
+};
+
+
